@@ -7,7 +7,7 @@ module Language.Brainfuck.C2BF.BF3
   )
   where
 import Control.Monad (join)
-import Control.Monad.Instances
+import Control.Monad.Instances ()
 import Data.Functor ((<$>))
 import Data.List (sortBy, nub, delete)
 import qualified Data.Map.Lazy as Map

@@ -5,18 +5,18 @@ import Data.List (unfoldr)
 import Data.Maybe (fromJust, isNothing)
 import Language.Brainfuck.C2BF
 import Language.Brainfuck.C2BF.Example
-import Language.C
-import Language.C.Data.Position
-import Language.C.Data.Ident
-import Language.C.Data.InputStream
-import Language.C.Syntax.AST
-import Language.C.System.GCC
+-- import Language.C
+-- import Language.C.Data.Position
+-- import Language.C.Data.Ident
+-- import Language.C.Data.InputStream
+-- import Language.C.Syntax.AST
+-- import Language.C.System.GCC
 -- haddock -h -o html/ c2bf.hs && open ./html/Language-Brainfuck-C2BF.html
 
 main :: IO ()
 main = do
 
-  let code = pic4
+  -- let code = pic4
 
   -- a <- readFile "../brainfuck/hs2bf_hello.bf"
   -- let res = parse a
@@ -28,9 +28,9 @@ main = do
   -- print code
   let code = fib5
   -- let code = [ InitChar5 30 (\x -> [ While5 x [ InitLong5 999999 (\y -> [ PrintD5 y ,  PrintD5 y , PrintD5 y ]), SubI5 x 1 ] ]) ]
-  let code0 = convertOption o0 code
-  let code1 = convertOption o1 code
-  let code2 = convertOption o2 code
+  -- let code0 = convertOption o0 code
+  -- let code1 = convertOption o1 code
+  -- let code2 = convertOption o2 code
   let code3 = convertOption o3 code
 
   -- print $ length $ showBF $ code
@@ -136,60 +136,62 @@ main = do
   --                  printBF code
   --                  runExt code
   --      Left a -> print a
+  let a = [PrintS5 "(▰╹◡╹)"]  -- 867
+  printBF a
 
 split80 :: [a] -> [[a]]
 split80 = unfoldr $ \x -> if null x then Nothing else Just $ splitAt 80 x
 
-convert65 (CBlockDecl (CDecl typedecl ((Just body, _, _):rest) a):xs) vars
-  = let t = (\(CTypeSpec x) -> x) $ head typedecl
-        varname = (\(CDeclr (Just x) _ _ _ _) -> x) body
-        initvar = case t of
-                       CCharType _ -> InitChar5
-                       CShortType _ -> InitShort5
-                       CIntType _ -> InitLong5
-                       CLongType _ -> InitLong5
-        xxs = CBlockDecl (CDecl typedecl rest a) : xs
-        in [initvar 0 (\v -> convert65 xxs ((varname, v) : vars))]
-convert65 (CBlockStmt (CExpr (Just (CAssign CAssignOp x y _)) _):xs) vars
-  = let varname = (\(CVar x _) -> x) x
-        a = (\(CVar x a) -> a) x
-        val = fromInteger $ (\(CConst (CIntConst (CInteger n _ _) _)) -> n) y
-        var = getvar varname vars
-        in if isNothing var
-              then errorVarNotFound varname a
-              else AddI5 (fromJust var) val : convert65 xs vars
-convert65 (CBlockStmt (CExpr (Just (CCall p@(CVar (Ident ('p':'r':'i':'n':'t':'f':[]) _ _) _) (CConst (CStrConst (CString ('%':'d':cs) a3) a4) : CVar varname a : rest) a5)) a6):xs) vars
-  = let var = getvar varname vars
-        xss = CBlockStmt (CExpr (Just (CCall p (CConst (CStrConst (CString cs a3) a4) : rest) a5)) a6) : xs
-        in if isNothing var
-              then errorVarNotFound varname a
-              else PrintD5 (fromJust var) : convert65 xss vars
-convert65 (CBlockStmt (CExpr (Just (CCall p@(CVar (Ident ('p':'r':'i':'n':'t':'f':[]) _ _) _) (CConst (CStrConst (CString (c:cs) a3) a4) : rest) a5)) a6):xs) vars
-  = let xss = CBlockStmt (CExpr (Just (CCall p (CConst (CStrConst (CString cs a3) a4) : rest) a5)) a6) : xs
-        in PrintS5 [c] : convert65 xss vars
-convert65 (_:xs) vars
-  = convert65 xs vars
-convert65 [] _ = []
+-- convert65 (CBlockDecl (CDecl typedecl ((Just body, _, _):rest) a):xs) vars
+--   = let t = (\(CTypeSpec x) -> x) $ head typedecl
+--         varname = (\(CDeclr (Just x) _ _ _ _) -> x) body
+--         initvar = case t of
+--                        CCharType _ -> InitChar5
+--                        CShortType _ -> InitShort5
+--                        CIntType _ -> InitLong5
+--                        CLongType _ -> InitLong5
+--         xxs = CBlockDecl (CDecl typedecl rest a) : xs
+--         in [initvar 0 (\v -> convert65 xxs ((varname, v) : vars))]
+-- convert65 (CBlockStmt (CExpr (Just (CAssign CAssignOp x y _)) _):xs) vars
+--   = let varname = (\(CVar x _) -> x) x
+--         a = (\(CVar x a) -> a) x
+--         val = fromInteger $ (\(CConst (CIntConst (CInteger n _ _) _)) -> n) y
+--         var = getvar varname vars
+--         in if isNothing var
+--               then errorVarNotFound varname a
+--               else AddI5 (fromJust var) val : convert65 xs vars
+-- convert65 (CBlockStmt (CExpr (Just (CCall p@(CVar (Ident ('p':'r':'i':'n':'t':'f':[]) _ _) _) (CConst (CStrConst (CString ('%':'d':cs) a3) a4) : CVar varname a : rest) a5)) a6):xs) vars
+--   = let var = getvar varname vars
+--         xss = CBlockStmt (CExpr (Just (CCall p (CConst (CStrConst (CString cs a3) a4) : rest) a5)) a6) : xs
+--         in if isNothing var
+--               then errorVarNotFound varname a
+--               else PrintD5 (fromJust var) : convert65 xss vars
+-- convert65 (CBlockStmt (CExpr (Just (CCall p@(CVar (Ident ('p':'r':'i':'n':'t':'f':[]) _ _) _) (CConst (CStrConst (CString (c:cs) a3) a4) : rest) a5)) a6):xs) vars
+--   = let xss = CBlockStmt (CExpr (Just (CCall p (CConst (CStrConst (CString cs a3) a4) : rest) a5)) a6) : xs
+--         in PrintS5 [c] : convert65 xss vars
+-- convert65 (_:xs) vars
+--   = convert65 xs vars
+-- convert65 [] _ = []
 
-fstsearch :: Eq a => a -> [(a, t)] -> [(a, t)]
-fstsearch b = filter (\(a, _) -> a == b)
+-- fstsearch :: Eq a => a -> [(a, t)] -> [(a, t)]
+-- fstsearch b = filter (\(a, _) -> a == b)
 
-getvar :: Eq a => a -> [(a, b)] -> Maybe b
-getvar a b = let var = fstsearch a b
-                 in if null var then Nothing else Just (snd (head var))
+-- getvar :: Eq a => a -> [(a, b)] -> Maybe b
+-- getvar a b = let var = fstsearch a b
+--                  in if null var then Nothing else Just (snd (head var))
 
-errorVarNotFound :: Ident -> NodeInfo -> a
-errorVarNotFound var (NodeInfo pos _ _)
-  = let fname = posFile pos
-        row = posRow pos
-        varname = identToString var
-        in error $ fname ++ ":"
-                ++ show row ++ ": error: "
-                ++ wrapvar varname
-                ++ " undeclared"
+-- errorVarNotFound :: Ident -> NodeInfo -> a
+-- errorVarNotFound var (NodeInfo pos _ _)
+--   = let fname = posFile pos
+--         row = posRow pos
+--         varname = identToString var
+--         in error $ fname ++ ":"
+--                 ++ show row ++ ": error: "
+--                 ++ wrapvar varname
+--                 ++ " undeclared"
 
-wrapvar :: String -> String
-wrapvar var = "`" ++ var ++ "'"
+-- wrapvar :: String -> String
+-- wrapvar var = "`" ++ var ++ "'"
 
 -- http://hackage.haskell.org/packages/archive/language-c/0.4.2/doc/html/Language-C-Syntax-AST.html
 

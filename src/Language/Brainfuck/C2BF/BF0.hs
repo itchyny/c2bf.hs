@@ -6,7 +6,7 @@ module Language.Brainfuck.C2BF.BF0
   , rawModulo
   , rawModulo'
   ) where
-import Control.Monad.Instances
+import Control.Monad.Instances ()
 import Data.Functor ((<$>))
 import Language.Brainfuck.C2BF.BF1
 

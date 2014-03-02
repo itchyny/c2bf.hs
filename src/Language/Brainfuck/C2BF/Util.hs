@@ -1,6 +1,6 @@
 module Language.Brainfuck.C2BF.Util where
 import Control.Monad (join)
-import Control.Monad.Instances
+import Control.Monad.Instances ()
 import Data.List (minimumBy)
 import Data.Functor ((<$>))
 

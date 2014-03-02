@@ -11,7 +11,7 @@ module Language.Brainfuck.C2BF.BF1
   , convert11Option
   ) where
 import Codec.Binary.UTF8.String (encode, decode)
-import Control.Monad.Instances
+import Control.Monad.Instances ()
 import Data.Char (chr)
 import Data.Functor ((<$>))
 import Data.Word (Word8)
